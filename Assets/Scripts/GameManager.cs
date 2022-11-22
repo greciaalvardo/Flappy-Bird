@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     // Declare variables.
     public Player player;
     public Text scoreText;
+    public Text highScoreText;
     public Text jumpText;
     public GameObject playButton;
     public GameObject gameOver;
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
     public GameObject mouseImg;
 
     private int score;
+    private int highScore;
 
     // Pause game upon starting.
     private void Awake()
@@ -66,6 +68,7 @@ public class GameManager : MonoBehaviour
         keyboardImg.SetActive(true);
         mouseImg.SetActive(true);
 
+        setHighScore();
         Pause();
     }
 
@@ -74,5 +77,14 @@ public class GameManager : MonoBehaviour
     {
         score++;
         scoreText.text = score.ToString();
+    }
+
+    public void setHighScore()
+    {
+        if(score > highScore)
+        {
+            highScore = score;
+            highScoreText.text = highScore.ToString();
+        }
     }
 }
