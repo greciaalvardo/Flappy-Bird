@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+ 
+
     // Declare variables.
     private SpriteRenderer spriteRenderer;
     public Sprite[] sprites;
     private int spriteIndex;
     private Vector3 direction;
-    public float gravity = -9.8f;
-    public float strength = 5f;
+    private const float gravity = -28.4f;
+    private const float strength = 8.0f;
+    private const float degrees = 20;
+    
 
     // Search for player component.
     private void Awake()
@@ -38,11 +42,16 @@ public class Player : MonoBehaviour
         // Player jumps when spacebar, up arrow key, left mouse click input is received.
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetMouseButtonDown(0))
         {
-            direction = Vector3.up * strength;
+            direction = Vector3.up*strength;
+            transform.rotation = Quaternion.Euler(Vector3.forward * degrees);
         }
 
         // Update player position.
-        direction.y += gravity * Time.deltaTime;
+       if (direction.y < 10.0f)
+       {
+            direction.y += gravity * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(Vector3.forward * (4*direction.y));
+       }
         transform.position += direction * Time.deltaTime;
     }
 
