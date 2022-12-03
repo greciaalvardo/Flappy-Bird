@@ -8,7 +8,8 @@ public class Player : MonoBehaviour
 
     // Declare variables.
     private SpriteRenderer spriteRenderer;
-    public Sprite[] sprites;
+    public Sprite[] sprite;
+    SampleCollection<Sprite> sprites = new SampleCollection<Sprite>();
     private int spriteIndex;
     private Vector3 direction;
     private const float gravity = -28.4f;
@@ -20,11 +21,16 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+
     }
 
     // Call AnimateSprite every .15 seconds.
     private void Start()
     {
+        sprite = Resources.LoadAll<Sprite>("Sprites");
+        sprites[0] = sprite[0];
+        sprites[1] = sprite[1];
+        sprites[2] = sprite[2];
         InvokeRepeating(nameof(AnimateSprite), 0.15f, 0.15f);
     }
 
@@ -65,6 +71,7 @@ public class Player : MonoBehaviour
             spriteIndex = 0;
         }
 
+        // using indexer 'sprites' now
         spriteRenderer.sprite = sprites[spriteIndex];
     }
 
@@ -78,6 +85,20 @@ public class Player : MonoBehaviour
         else if(other.gameObject.tag == "Scoring")
         {
             FindObjectOfType<GameManager>().IncreaseScore();
+        }
+    }
+
+    public class SampleCollection<T>
+    {
+        // Declare an array to store the data elements.
+        public T[] arr = new T[3];
+        public int Length => arr.Length;
+
+        // Define the indexer to allow client code to use [] notation.
+        public T this[int i]
+        {
+            get { return arr[i]; }
+            set { arr[i] = value; }
         }
     }
 }
